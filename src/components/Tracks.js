@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-// Import videos for desktop version
 import healthcareVideo from './gif/healthcare.mp4';
 import DefenceAndSecurityVideo from './gif/defence&security.mp4';
 import FintechVideo from './gif/fintech.mp4';
@@ -8,7 +7,6 @@ import OpenInnovationVideo from './gif/openinnovation.mp4';
 import EnergyAndAgricultureVideo from './gif/energyandagriculture.mp4';
 import SocialGoodsAndSdgsVideo from './gif/socialgoods.mp4';
 
-// Import hover videos for desktop version
 import healthcareHoverVideo from './gif_while_hover/heathcare.mp4';
 import DefenceAndSecurityHoverVideo from './gif_while_hover/defence&security.mp4';
 import FintechHoverVideo from './gif_while_hover/fintech.mp4';
@@ -89,12 +87,12 @@ const Tracks = () => {
 
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 1) % tracks.length);
-    setIsClicked(false); // Reset click state when changing tracks
+    setIsClicked(false);
   };
 
   const handlePrev = () => {
     setCurrentIndex((prev) => (prev - 1 + tracks.length) % tracks.length);
-    setIsClicked(false); // Reset click state when changing tracks
+    setIsClicked(false);
   };
 
   const handleBoxClick = () => {
@@ -112,8 +110,8 @@ const Tracks = () => {
         }}
       />
       
-      {/* Desktop View */}
-      <div className="hidden md:grid grid-cols-4 grid-rows-3 gap-2 w-full max-w-7xl px-8 relative">
+      {/* Desktop View (large screens) */}
+      <div className="hidden lg:grid grid-cols-4 grid-rows-3 gap-2 w-full max-w-7xl px-8 relative">
         {/* First Row */}
         <TrackBox 
           title="Defence and"
@@ -184,8 +182,8 @@ const Tracks = () => {
         </div>
       </div>
 
-      {/* Mobile View */}
-      <div className="md:hidden flex flex-col items-center w-full">
+      {/* Mobile and Tablet View (small and medium screens) */}
+      <div className="md:flex lg:hidden flex flex-col items-center w-full">
         <h2 className="text-6xl font-black text-black mb-20">TRACKS</h2>
 
         {/* Track Box */}
