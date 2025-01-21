@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+// Import videos for desktop version
 import healthcareVideo from './gif/healthcare.mp4';
 import DefenceAndSecurityVideo from './gif/defence&security.mp4';
 import FintechVideo from './gif/fintech.mp4';
@@ -7,6 +8,7 @@ import OpenInnovationVideo from './gif/openinnovation.mp4';
 import EnergyAndAgricultureVideo from './gif/energyandagriculture.mp4';
 import SocialGoodsAndSdgsVideo from './gif/socialgoods.mp4';
 
+// Import hover videos for desktop version
 import healthcareHoverVideo from './gif_while_hover/heathcare.mp4';
 import DefenceAndSecurityHoverVideo from './gif_while_hover/defence&security.mp4';
 import FintechHoverVideo from './gif_while_hover/fintech.mp4';
@@ -36,24 +38,82 @@ const TrackBox = ({ title, titleSecondLine, defaultVideo, hoverVideo, className,
           </span>
         )}
       </div>
-      <video src={isHovered ? hoverVideo : defaultVideo} className="absolute bottom-3 right-3 h-24 w-24 object-contain" autoPlay loop muted playsInline />
+      <video 
+        src={isHovered ? hoverVideo : defaultVideo} 
+        className="absolute bottom-3 right-3 h-24 w-24 object-contain" 
+        autoPlay 
+        loop 
+        muted 
+        playsInline 
+      />
     </div>
   );
 };
 
 const Tracks = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isClicked, setIsClicked] = useState(false);
+
+  const tracks = [
+    { 
+      title: "Defence and Security", 
+      video: DefenceAndSecurityVideo,
+      hoverVideo: DefenceAndSecurityHoverVideo 
+    },
+    { 
+      title: "Fintech", 
+      video: FintechVideo,
+      hoverVideo: FintechHoverVideo 
+    },
+    { 
+      title: "Healthcare", 
+      video: healthcareVideo,
+      hoverVideo: healthcareHoverVideo 
+    },
+    { 
+      title: "Open Innovation", 
+      video: OpenInnovationVideo,
+      hoverVideo: OpenInnovationHoverVideo 
+    },
+    { 
+      title: "Energy and Agriculture", 
+      video: EnergyAndAgricultureVideo,
+      hoverVideo: EnergyAndAgricultureHoverVideo 
+    },
+    { 
+      title: "Social Good and SDGs", 
+      video: SocialGoodsAndSdgsVideo,
+      hoverVideo: SocialGoodsAndSdgsHoverVideo 
+    }
+  ];
+
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % tracks.length);
+    setIsClicked(false); // Reset click state when changing tracks
+  };
+
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev - 1 + tracks.length) % tracks.length);
+    setIsClicked(false); // Reset click state when changing tracks
+  };
+
+  const handleBoxClick = () => {
+    setIsClicked(!isClicked);
+  };
+
   return (
     <div className="bg-customYellow min-h-screen flex flex-col items-center py-12 relative">
       {/* Background Grid Pattern */}
-      <div className="absolute inset-0" 
+      <div 
+        className="absolute inset-0" 
         style={{
           backgroundImage: 'radial-gradient(circle, black 1px, transparent 2px)',
           backgroundSize: '60px 60px',
         }}
       />
       
-      {/* Main Grid Container */}
-      <div className="grid grid-cols-4 grid-rows-3 gap-2 w-full max-w-7xl px-8 relative">
+      {/* Desktop View */}
+      <div className="hidden md:grid grid-cols-4 grid-rows-3 gap-2 w-full max-w-7xl px-8 relative">
         {/* First Row */}
         <TrackBox 
           title="Defence and"
@@ -80,7 +140,7 @@ const Tracks = () => {
           customTitleStyle={{ fontSize: '2rem' }}
         />
 
-        {/* Sponsored Track Box (Spanning two rows) */}
+        {/* Sponsored Track Box */}
         <div className="bg-black text-customYellow border-4 border-black rounded-xl relative flex row-span-2">
           <span className="absolute top-4 left-4 text-4xl font-bold font-mono">Sponsored Track</span>
         </div>
@@ -92,12 +152,12 @@ const Tracks = () => {
           defaultVideo={OpenInnovationVideo}
           hoverVideo={OpenInnovationHoverVideo}
           className="h-48 col-start-1"
-          customTitleStyle={{ fontSize: '1.87rem' }} // Custom font size between 2xl and 3xl
+          customTitleStyle={{ fontSize: '1.87rem' }}
         />
 
         {/* Tracks Text Box */}
         <div className="bg-transparent col-span-2 col-start-2 flex items-center justify-center">
-          <div className="text-9xl font-black text-black">TRACKS</div> {/* Increased font size */}
+          <div className="text-9xl font-black text-black">TRACKS</div>
         </div>
 
         {/* Third Row */}
@@ -121,6 +181,51 @@ const Tracks = () => {
             className="h-48"
             customTitleStyle={{ fontSize: '2rem' }}
           />
+        </div>
+      </div>
+
+      {/* Mobile View */}
+      <div className="md:hidden flex flex-col items-center w-full">
+        <h2 className="text-6xl font-black text-black mb-20">TRACKS</h2>
+
+        {/* Track Box */}
+        <div className="relative flex items-center justify-center">
+          <button
+            onClick={handlePrev}
+            className="absolute left-[-40px] sm:left-[-60px] text-black text-4xl font-bold px-0 py-2 z-10 top-1/2 transform -translate-y-1/2"
+          >
+            &lt;
+          </button>
+
+          <div
+            onClick={handleBoxClick}
+            className="bg-customYellow border-4 border-black rounded-xl flex flex-col items-center justify-center transition-colors duration-300"
+            style={{
+              width: "250px",
+              height: "350px",
+              position: "relative",
+              backgroundColor: isClicked ? '#02FFFF' : ''
+            }}
+          >
+            <h2 className="text-3xl sm:text-xl px-1 font-bold text-center absolute top-4 w-full">
+              {tracks[currentIndex].title}
+            </h2>
+            <video
+              src={isClicked ? tracks[currentIndex].hoverVideo : tracks[currentIndex].video}
+              className="h-25 w-25 object-contain mt-12"
+              autoPlay
+              loop
+              muted
+              playsInline
+            />
+          </div>
+
+          <button
+            onClick={handleNext}
+            className="absolute right-[-40px] sm:right-[-60px] text-black text-4xl font-bold px-0 py-2 z-10 top-1/2 transform -translate-y-1/2"
+          >
+            &gt;
+          </button>
         </div>
       </div>
     </div>
